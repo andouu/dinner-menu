@@ -1,0 +1,6 @@
+.intro-text-char {
+  display: inline-block;
+  font-size: 6rem;
+  font-weight: 700;
+  font-family: var(--bold-text-font-family);
+}

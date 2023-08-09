@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=REM:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  font-size: 62.5%;
+  
+  --regular-text-color: #141414;
+  --accent-text-color: #FFC73B;
+
+  --bold-text-font-family: 'REM', sans-serif;
+  --regular-text-font-family: 'Rubik', sans-serif;
+
+  --display-text-size: 4.5rem;
+  --display-text-weight: 900;
+  --header-text-size: 2.1rem;
+  --header-text-weight: 700;
+  --subheader-text-size: 1.8rem;
+  --subheader-text-weight: 600;
+  --body-text-size: 1.6rem;
+  --body-text-weight: 400;
+
+  --rounding: 0.01rem;
+
+  color: var(--regular-text-color);
+  font-family: var(--regular-text-font-family);
+  font-weight: var(--body-text-weight);
+
+  background-color: #FFFCF7;
+}
+
+html,
+body,
+#root {
+  
+}
+
+body {
+  cursor: url('/images/ellipse.svg'), pointer;
+  cursor: -webkit-image-set(url('/images/ellipse.svg') 1x, url('/images/ellipse.svg') 2x), pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, Roboto,
+    Ubuntu, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+.scrollArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: 'red';
+  z-index: 100000;
+}
+
+.fullscreen {
+  width: 100%;
+  height: 100vh;
+}
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-content-vertically {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.display-text, .display-text * {
+  font-size: var(--display-text-size) !important;
+  font-weight: var(--display-text-weight) !important;
+  letter-spacing: -0.5px;
+}
+
+h1, h1 * {
+  font-size: var(--header-text-size);
+  font-weight: var(--header-text-weight);
+  font-family: var(--bold-text-font-family);
+  line-height: calc(var(--header-text-size) * 1.5);
+}
+
+div, p, span {
+  font-size: var(--body-text-size);
+  letter-spacing: 0.5;
+  line-height: calc(var(--body-text-size) * 1.5);
+}
+
+.rounded {
+  border-radius: var(--rounding);
+}

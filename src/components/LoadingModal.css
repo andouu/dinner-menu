@@ -1,0 +1,21 @@
+.modal-container {
+
+}
+
+.loading-bar-container {
+  width: calc(100% - 15rem);
+  height: 1.2rem;
+  outline-color: var(--regular-text-color);
+  outline-style: dashed;
+  outline-offset: 0.4rem;
+  outline-width: 2.5px;
+}
+
+.loading-bar-container .loading-bar {
+  height: 100%;
+  background-color: var(--regular-text-color);
+}
+
+.percentage-text-char {
+  display: inline-block;
+}

@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import { Line, Loader, useAspect } from '@react-three/drei';
-import { Canvas, extend, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { Line, Loader, useAspect, useGLTF } from '@react-three/drei';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import React, { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Flex, useFlexSize } from '@react-three/flex';
 import { state } from './SceneState';
 import { Text } from './Text';
 import { Geo } from './Geo';
-
-extend({});
+import { motion } from 'framer-motion';
+import './Scene.css';
+import { GLTFDraco, GLTFMaterials, GLTFNodes } from '../types/models';
 
 interface HeightReporterProps {
   onReflow: (width: number, height: number) => any;
@@ -25,15 +26,21 @@ export interface PageProps {
   lang: 'en' | 'zh';
   tag: string;
   images: string[];
+  model: {
+    path: string;
+    compose: (nodes: GLTFNodes, materials: GLTFMaterials ) => { geometry: THREE.BufferGeometry, material: THREE.Material | THREE.Material[] }[];
+    scale: number;
+    position: [number, number, number];
+    rotation: [number, number, number];
+  }
   textScaleFactor: number;
   onReflow: HeightReporterProps['onReflow'];
   left: boolean;
 };
 
 const Page: React.FC<PageProps> = (props: PageProps) => {
-  const { text, lang, tag, images, textScaleFactor, onReflow, left } = props;
+  const { text, lang, tag, images, model, textScaleFactor, onReflow, left } = props;
 
-  const textures = useLoader(THREE.TextureLoader, images);
   const { viewport } = useThree();
   const boxProps = {
     centerAnchor: true,
@@ -49,23 +56,36 @@ const Page: React.FC<PageProps> = (props: PageProps) => {
     maxHeight: 6,
   };
 
+  const { nodes, materials } = useGLTF(model.path) as GLTFDraco;
+  const modelInfo = model.compose(nodes, materials);
+
+  const modelRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    if (modelRef.current !== null) {
+      modelRef.current.rotation.z += left ? 0.001 : -0.001;
+    }
+  });
+
   return (
     <Box dir="column" align={left ? 'flex-start' : 'flex-end'} justify="flex-start" width="100%" height="auto" minHeight="100%">
       <HeightReporter onReflow={onReflow} />
       <Box dir="row" width="100%" height="auto" justify={left ? 'flex-end' : 'flex-start'} margin={0} grow={1} wrap="wrap">
-        {textures.map((texture, index) => (
-          <Box key={index} {...boxProps}>
-            {(width, height) => (
-              <mesh>
-                <planeGeometry args={[width, height]} />
-                <meshBasicMaterial map={texture} toneMapped={false} />
-              </mesh>
-            )}
-          </Box>
-        ))}
+        <Box {...boxProps}>
+          <group dispose={null}>
+            <group ref={modelRef} scale={model.scale} position={model.position} rotation={model.rotation}>
+              {modelInfo.map(({ geometry, material }) => (
+                <mesh
+                  geometry={geometry}
+                  material={material}
+                />
+              ))}
+            </group>
+          </group>
+        </Box>
       </Box>
       <Box marginLeft={1.5} marginRight={1.5} marginTop={2}>
-        <Text position={[left ? 0.5 : -0.5, 0.5, 1]} fontSize={textScaleFactor} lineHeight={1} letterSpacing={-0.05} maxWidth={(viewport.width / 4) * 3} lang="en">
+        <Text position={[left ? -0.25 : 0.25, 2.5, 1]} fontSize={1.5 * textScaleFactor} lineHeight={1} letterSpacing={-0.05} maxWidth={(viewport.width / 4) * 3} lang="en">
           {tag}
           <meshBasicMaterial color="#FFC73B" toneMapped={false} />
         </Text>
@@ -74,9 +94,9 @@ const Page: React.FC<PageProps> = (props: PageProps) => {
         <Text
           lang={lang}
           bold
-          position-z={0.5}
+          position={[left ? -0.5 : 0.5, 2, 0.5]}
           textAlign={left ? 'left' : 'right'}
-          fontSize={1.5 * textScaleFactor}
+          fontSize={2 * textScaleFactor}
           lineHeight={1}
           letterSpacing={-0.05}
           color="#141414"
@@ -176,7 +196,7 @@ const Content = (props: ContentProps) => {
             textScaleFactor={scale}
             onReflow={(width, height) => {
               sizesRef.current[i] = height;
-              state.threshold = Math.max(4, (4 / (15.8 * 3)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
+              state.threshold = Math.max(3, (3 / (15.8 * 3)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
             }}
           />
         ))}
@@ -223,15 +243,20 @@ export const Scene = () => {
   const [pages, setPages] = useState<number>(0);
 
   return (
-    <>
+    <motion.div
+      id="scene-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2, delay: 2 }}
+    >
       <Canvas
         shadows
         camera={{ position: [0, 0, 10], far: 1000 }}
-        gl={{ powerPreference: 'high-performance', alpha: false, antialias: false, stencil: false, depth: false }}
+        // gl={{ powerPreference: 'high-performance', alpha: false, antialias: false, stencil: false, depth: false }}
         onCreated={({ gl }) => gl.setClearColor('#FFFCF7')}
       >
         <pointLight position={[-10, -10, -10]} intensity={1} />
-        <ambientLight intensity={0.4} />
+        <ambientLight intensity={8} />
         <spotLight
           castShadow
           angle={0.3}
@@ -254,6 +279,6 @@ export const Scene = () => {
         <div style={{ height: `${pages * 100}vh` }} />
       </div>
       <Loader />
-    </>
+    </motion.div>
   );
 };

@@ -1,8 +1,4 @@
-.modal-container {
-
-}
-
-.loading-bar-container {
+.modal-loading-bar-container {
   width: calc(100% - 15rem);
   height: 1.2rem;
   outline-color: var(--regular-text-color);
@@ -11,7 +7,7 @@
   outline-width: 2.5px;
 }
 
-.loading-bar-container .loading-bar {
+.modal-loading-bar-container .modal-loading-bar {
   height: 100%;
   background-color: var(--regular-text-color);
 }

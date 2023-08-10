@@ -1,8 +1,8 @@
 import { AnimatePresence } from 'framer-motion';
 import { LoadingModal } from '../components/LoadingModal';
 import { useState } from 'react';
-import { Intro } from '../components/Intro';
 import './Root.css';
+import { Scene } from '../components/Scene';
 
 export const Root = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -12,7 +12,7 @@ export const Root = () => {
       <AnimatePresence>
         {loading
           ? <LoadingModal key="loading" finishLoading={() => setLoading(false)} />
-          : <Intro />}
+          : <Scene />}
       </AnimatePresence>
     </div>
   );

@@ -4,7 +4,6 @@ import {
 } from 'react-router-dom';
 import { Root } from './routes/Root';
 import { Error } from './routes/Error';
-import { Scene } from './components/Scene';
 import './App.css';
 
 const router = createBrowserRouter([

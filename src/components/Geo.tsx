@@ -4,12 +4,13 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF, MeshDistortMaterial, Shadow } from '@react-three/drei'
 import { Text } from './Text'
 import { state } from './SceneState';
+import { GLTFDraco } from '../types/models'
 
 export const Geo = (props: any) => {
   const group = useRef<THREE.Group>(null);
   const shadow = useRef<any>(null);
 
-  const { nodes } = useGLTF('/geo.min.glb', true) as ReturnType<typeof useGLTF> & { nodes: { geo: any }, materials: {['default']: THREE.MeshStandardMaterial}};
+  const { nodes } = useGLTF('/geo.min.glb', true) as GLTFDraco;
 
   useFrame(({ clock }) => {
     const t = (1 + Math.sin(clock.getElapsedTime() * 1.5)) / 2;

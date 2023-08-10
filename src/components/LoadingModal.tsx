@@ -55,9 +55,9 @@ export const LoadingModal: React.FC<ModalProps> = (props: ModalProps) => {
       className="modal-container fullscreen center-content-vertically"
       key="loading-modal"
     >
-      <motion.div ref={loaderScope} className="loading-bar-container rounded" initial={{ opacity: 0 }}>
+      <motion.div ref={loaderScope} className="modal-loading-bar-container rounded" initial={{ opacity: 0 }}>
         <motion.div
-          className="loading-bar"
+          className="modal-loading-bar"
           initial={{ width: '0%' }}
         />
       </motion.div>

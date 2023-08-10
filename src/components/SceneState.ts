@@ -13,41 +13,79 @@ interface SceneState {
 export const state: SceneState = {
   top: 0,
   pages: 0,
-  threshold: 4,
+  threshold: 3,
   mouse: [0, 0],
   content: [
     {
       tag: '00',
       text: `LOX BAGEL`,
       lang: 'en',
-      images: ['/images/BH41NVu.jpg', '/images/fBoIJLX.jpg', '/images/04zTfWB.jpg'],
+      images: ['/images/BH41NVu.jpg'],
+      model: {
+        path: '/bagel_and_lox.glb',
+        compose: (nodes, materials) => {
+          return [{ geometry: nodes.model_tex_u1_v1_0.geometry, material: materials.tex_u1_v1 }];
+        },
+        scale: 65,
+        position: [1.5, -2, 0],
+        rotation: [-Math.PI / 8, -Math.PI / 8, 0],
+      },
     },
     {
       tag: '01',
-      text: `粥`,
+      text: `皮蛋瘦肉粥\n+ 油条`,
       lang: 'zh',
-      images: ['/images/c4cA8UN.jpg', '/images/ajQ73ol.jpg', '/images/gZOmLNU.jpg']
-    },
-    {
-      tag: '02',
-      text: `The Hiramic\nLegend`,
-      lang: 'en',
-      images: ['/images/mbFIW1b.jpg', '/images/mlDUVig.jpg', '/images/gwuZrgo.jpg']
-    },
+      images: ['/images/c4cA8UN.jpg'],
+      model: {
+        path: '/english_delftware_bowl.glb',
+        compose: (nodes, materials) => {
+          let material = materials.initialShadingGroup;
+          return [
+            {
+              geometry: nodes.Object_2.geometry,
+              material,
+            },
+            {
+              geometry: nodes.Object_3.geometry,
+              material,
+            },
+            {
+              geometry: nodes.Object_4.geometry,
+              material,
+            },
+            {
+              geometry: nodes.Object_5.geometry,
+              material,
+            },
+            {
+              geometry: nodes.Object_6.geometry,
+              material,
+            },
+            {
+              geometry: nodes.Object_7.geometry,
+              material,
+            },
+          ];
+        },
+        scale: 0.022,
+        position: [-1, -0.5, 0],
+        rotation: [-Math.PI / 10, Math.PI / 8, 0],
+      },
+    }
   ],
   depthbox: [
     {
       depth: 0,
-      color: '#cccccc',
+      color: '#FFFFFF',
       textColor: '#ffffff',
-      text: 'In a void,\nno one could say\nwhy a thing\nonce set in motion\nshould stop anywhere.',
+      text: 'Cuisine:\n - USA (New York City)\n - China',
       lang: 'en',
       image: '/images/cAKwexj.jpg',
     },
     {
       depth: -5,
-      textColor: '#272727',
-      text: 'For why should it stop\nhere rather than here?\nSo that a thing\nwill either be at rest\nor must be moved\nad infinitum.',
+      textColor: '#FFFFFF',
+      text: 'Recipes & Nutrition Facts',
       lang: 'en',
       image: '/images/04zTfWB.jpg',
     },

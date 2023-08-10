@@ -13,7 +13,7 @@ interface SceneState {
 export const state: SceneState = {
   top: 0,
   pages: 0,
-  threshold: 3,
+  threshold: 2,
   mouse: [0, 0],
   content: [
     {
@@ -76,15 +76,15 @@ export const state: SceneState = {
   depthbox: [
     {
       depth: 0,
-      color: '#FFFFFF',
-      textColor: '#ffffff',
+      color: '#141414',
+      textColor: '##141414',
       text: 'Cuisine:\n - USA (New York City)\n - China',
       lang: 'en',
       image: '/images/cAKwexj.jpg',
     },
     {
       depth: -5,
-      textColor: '#FFFFFF',
+      textColor: '#141414',
       text: 'Recipes & Nutrition Facts',
       lang: 'en',
       image: '/images/04zTfWB.jpg',

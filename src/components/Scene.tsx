@@ -74,8 +74,9 @@ const Page: React.FC<PageProps> = (props: PageProps) => {
         <Box {...boxProps}>
           <group dispose={null}>
             <group ref={modelRef} scale={model.scale} position={model.position} rotation={model.rotation}>
-              {modelInfo.map(({ geometry, material }) => (
+              {modelInfo.map(({ geometry, material }, i) => (
                 <mesh
+                  key={geometry.name + i}
                   geometry={geometry}
                   material={material}
                 />
@@ -142,10 +143,10 @@ const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text,
         bold
         lang={lang}
         position={[boxWidth / 2, -boxHeight / 2, depth + 1.5]}
-        maxWidth={(viewport.width / 4) * 1}
+        maxWidth={viewport.width / 2}
         anchorX="center"
         anchorY="middle"
-        fontSize={0.6 * textScaleFactor}
+        fontSize={1 * textScaleFactor}
         lineHeight={1}
         letterSpacing={-0.05}
         color={textColor}>
@@ -196,30 +197,10 @@ const Content = (props: ContentProps) => {
             textScaleFactor={scale}
             onReflow={(width, height) => {
               sizesRef.current[i] = height;
-              state.threshold = Math.max(3, (3 / (15.8 * 3)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
+              state.threshold = Math.max(2, (2 / (15.8 * 2)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
             }}
           />
         ))}
-        <Box dir="row" width="100%" height="100%" align="center" justify="center">
-          <Box centerAnchor>
-            {state.lines.map((props, index) => (
-              <Line key={index} {...props} />
-            ))}
-            <Text
-              bold
-              lang="en"
-              position-z={0.5}
-              anchorX="center"
-              anchorY="middle"
-              fontSize={1.5 * scale}
-              lineHeight={1}
-              letterSpacing={-0.05}
-              color="black"
-              maxWidth={(viewport.width / 4) * 3}>
-              {state.depthbox[0].text}
-            </Text>
-          </Box>
-        </Box>
         <Box dir="row" width="100%" height="100%" align="center" justify="center">
           <Box>
             <Layercard {...state.depthbox[0]} text={state.depthbox[1].text} boxWidth={bW} boxHeight={bH} map={texture} textScaleFactor={scale} />

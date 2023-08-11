@@ -25,6 +25,12 @@
   font-weight: var(--body-text-weight);
 
   background-color: #FFEAC7;
+  --secondary-color: #FFD794;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
 }
 
 .fullscreen {

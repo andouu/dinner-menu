@@ -1,4 +1,4 @@
-import { LayercardProps, PageProps } from './Scene';
+import { LayercardProps, PageProps } from '../components/Scene';
 
 interface SceneState {
   top: number;

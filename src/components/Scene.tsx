@@ -1,14 +1,14 @@
 import * as THREE from 'three';
-import { Line, Loader, useAspect, useGLTF } from '@react-three/drei';
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { Loader, useAspect, useGLTF } from '@react-three/drei';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import React, { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Flex, useFlexSize } from '@react-three/flex';
-import { state } from './SceneState';
+import { state } from '../api/SceneState';
 import { Text } from './Text';
 import { Geo } from './Geo';
 import { motion } from 'framer-motion';
-import './Scene.css';
 import { GLTFDraco, GLTFMaterials, GLTFNodes } from '../types/models';
+import './Scene.css';
 
 interface HeightReporterProps {
   onReflow: (width: number, height: number) => any;
@@ -116,7 +116,7 @@ export interface LayercardProps {
   lang: 'en' | 'zh';
   boxWidth: number;
   boxHeight: number;
-  map: THREE.Texture;
+  map?: THREE.Texture;
   textColor: string;
   color?: string;
   textScaleFactor: number;
@@ -129,7 +129,7 @@ const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text,
   useFrame(() => {
     const page = (pageLerp.current = THREE.MathUtils.lerp(pageLerp.current, state.top / size.height, 0.15));
     if (depth >= 0 && ref.current !== null) {
-      ref.current.opacity = page < state.threshold * 1.7 ? 1 : 1 - (page - state.threshold * 1.7);
+      ref.current.opacity = page < state.threshold * 1.7 ? 1.7 : 1 - (page - state.threshold * 1.7);
     }
   });
 
@@ -165,8 +165,6 @@ const Content = (props: ContentProps) => {
   const { onReflow } = props;
 
   const group = useRef<THREE.Group>(null);
-
-  const texture = useLoader(THREE.TextureLoader, state.depthbox[0].image);
 
   const { viewport, size } = useThree();
   const [bW, bH] = useAspect(1920, 1920, 0.5);
@@ -204,7 +202,7 @@ const Content = (props: ContentProps) => {
         ))}
         <Box dir="row" width="100%" height="100%" align="center" justify="center">
           <Box>
-            <Layercard {...state.depthbox[0]} text={state.depthbox[1].text} boxWidth={bW} boxHeight={bH} map={texture} textScaleFactor={scale} />
+            <Layercard {...state.depthbox[0]} text={state.depthbox[1].text} boxWidth={bW} boxHeight={bH} textScaleFactor={scale} />
             <Geo position={[bW / 2, -bH / 2, state.depthbox[1].depth]} />
           </Box>
         </Box>
@@ -236,6 +234,7 @@ export const Scene = () => {
         camera={{ position: [0, 0, 10], far: 1000 }}
         // gl={{ powerPreference: 'high-performance', alpha: false, antialias: false, stencil: false, depth: false }}
         onCreated={({ gl }) => gl.setClearColor('#FFEAC7')}
+        style={{ zIndex: -1 }}
       >
         <pointLight position={[-10, -10, -10]} intensity={1} />
         <ambientLight intensity={8} />
@@ -253,7 +252,7 @@ export const Scene = () => {
         </Suspense>
       </Canvas>
       <div
-        className="scrollArea" 
+        className="scrollArea"
         ref={scrollArea}
         onScroll={onScroll}
         onPointerMove={(e) => (state.mouse = [(e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1])}

@@ -1,4 +1,4 @@
-import { Mesh, MeshStandardMaterial } from 'three';
+import { Mesh } from 'three';
 import { useGLTF } from '@react-three/drei';
 
 export type GLTF = ReturnType<typeof useGLTF>;

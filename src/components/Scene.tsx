@@ -137,7 +137,7 @@ const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text,
     <>
       <mesh position={[boxWidth / 2, -boxHeight / 2, depth]}>
         <planeGeometry args={[boxWidth, boxHeight]} />
-        <meshBasicMaterial ref={ref} color={color} map={map} toneMapped={false} transparent opacity={1} />
+        <meshBasicMaterial ref={ref} color={color}  toneMapped={false} transparent opacity={1} />
       </mesh>
       <Text
         bold
@@ -149,7 +149,8 @@ const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text,
         fontSize={1 * textScaleFactor}
         lineHeight={1}
         letterSpacing={-0.05}
-        color={textColor}>
+        color={textColor}
+      >
         {text}
       </Text>
     </>
@@ -234,7 +235,7 @@ export const Scene = () => {
         shadows
         camera={{ position: [0, 0, 10], far: 1000 }}
         // gl={{ powerPreference: 'high-performance', alpha: false, antialias: false, stencil: false, depth: false }}
-        onCreated={({ gl }) => gl.setClearColor('#FFFCF7')}
+        onCreated={({ gl }) => gl.setClearColor('#FFEAC7')}
       >
         <pointLight position={[-10, -10, -10]} intensity={1} />
         <ambientLight intensity={8} />

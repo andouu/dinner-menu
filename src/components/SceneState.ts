@@ -68,7 +68,7 @@ export const state: SceneState = {
           ];
         },
         scale: 0.022,
-        position: [-1, -0.5, 0],
+        position: [-1, -1, 0],
         rotation: [-Math.PI / 10, Math.PI / 8, 0],
       },
     }
@@ -76,18 +76,18 @@ export const state: SceneState = {
   depthbox: [
     {
       depth: 0,
-      color: '#141414',
-      textColor: '##141414',
-      text: 'Cuisine:\n - USA (New York City)\n - China',
+      color: '#FFD794',
+      textColor: 'rgb(20, 20, 20)',
+      text: '',
       lang: 'en',
-      image: '/images/cAKwexj.jpg',
+      image: '/images/fruits_monotone.avif',
     },
     {
-      depth: -5,
+      depth: -3.5,
       textColor: '#141414',
-      text: 'Recipes & Nutrition Facts',
+      text: 'RECIPES &\nNUTRITION FACTS',
       lang: 'en',
-      image: '/images/04zTfWB.jpg',
+      image: '/images/fruits.avif',
     },
   ],
   lines: [

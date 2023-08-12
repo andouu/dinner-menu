@@ -5,6 +5,7 @@
   
   --regular-text-color: #141414;
   --accent-text-color: #FFC73B;
+  --note-text-color: #33364C;
 
   --bold-text-font-family: 'REM', sans-serif;
   --regular-text-font-family: 'Rubik', sans-serif;
@@ -26,11 +27,7 @@
 
   background-color: #FFEAC7;
   --secondary-color: #FFD794;
-}
-
-ul, li {
-  margin: 0;
-  padding: 0;
+  --tertiary-color: #FFF1DE;
 }
 
 .fullscreen {

@@ -1,12 +1,13 @@
+import { AiFillGithub } from 'react-icons/ai';
 import { motion, useScroll } from 'framer-motion';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import { useState } from 'react';
-import './Header.css';
 import { NavigationOption, NAVIGATION_OPTIONS } from '../api/NavigationOptions';
+import { useLocation } from 'react-router-dom';
+import './Header.css';
 
 const ScrollingText: React.FC = () => {
   return (
-    <div id="tape">
+    <div className="tape">
 
     </div>
   );
@@ -31,21 +32,21 @@ const MenuToggle: React.FC<MenuToggleProps> = ({ toggle }: MenuToggleProps) => (
     <svg width="23" height="23" viewBox="0 0 23 23">
       <Path
         variants={{
-          closed: { d: "M 2 2.5 L 20 2.5" },
+          closed: { d: "M 2 2.5 L 20 2.5", transition: { delay: 0.5 } },
           open: { d: "M 3 16.5 L 17 2.5" },
         }}
       />
       <Path
         d="M 2 9.423 L 20 9.423"
         variants={{
-          closed: { opacity: 1 },
+          closed: { opacity: 1, transition: { delay: 0.5 } },
           open: { opacity: 0 },
         }}
         transition={{ duration: 0.1 }}
       />
       <Path
         variants={{
-          closed: { d: "M 2 16.346 L 20 16.346" },
+          closed: { d: "M 2 16.346 L 20 16.346", transition: { delay: 0.5 } },
           open: { d: "M 3 2.5 L 17 16.346" },
         }}
       />
@@ -55,16 +56,18 @@ const MenuToggle: React.FC<MenuToggleProps> = ({ toggle }: MenuToggleProps) => (
 
 interface MenuItemProps {
   navigationOption: NavigationOption;
+  focused: boolean;
+  onClick: (focused: boolean) => any;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ navigationOption }: MenuItemProps) => {
+const MenuItem: React.FC<MenuItemProps> = ({ navigationOption, focused, onClick }: MenuItemProps) => {
   const variants = {
     open: {
       y: 0,
       opacity: 1,
     },
     closed: {
-      y: 50,
+      y: 75,
       opacity: 0,
     },
     held: {
@@ -73,7 +76,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ navigationOption }: MenuItemProps) 
   };
 
   return (
-    <motion.li variants={variants}>
+    <motion.li style={{ color: focused ? '#D6913C' : undefined }} variants={variants} onClick={() => onClick(focused)}>
       {navigationOption.text}
     </motion.li>
   );
@@ -81,6 +84,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ navigationOption }: MenuItemProps) 
 
 const Menu: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+
+  const location = useLocation();
 
   const sidebarVariants = {
     open: {
@@ -101,17 +106,54 @@ const Menu: React.FC = () => {
     }
   };
 
+  const footerNoteVariants = {
+    open: {
+      y: 0,
+      opacity: 1,
+      transition: { delay: 1.5 }
+    },
+    closed: {
+      y: 75,
+      opacity: 0,
+    }
+  };
+
+  const handleLinkClick = (focused: boolean) => {
+    if (focused) {
+      setOpen(false);
+    }
+    else {
+
+    }
+  };
+
   return (
     <motion.nav
-      id="menu"
+      className="menu"
       animate={open ? 'open' : 'closed'}
     >
-      <motion.div id="sidebar" variants={sidebarVariants} transition={{ duration: 0.25 }}>
-        <motion.ul variants={ulVariants}>
-          {NAVIGATION_OPTIONS.map((navigationOption: NavigationOption, i) => (
-            <MenuItem key={i} navigationOption={navigationOption} />
-          ))}
-        </motion.ul>
+      <motion.div className="sidebar" variants={sidebarVariants} transition={{ duration: 0.25 }}>
+        <motion.div className="sidebar-content">
+          <motion.ul variants={ulVariants}>
+            {NAVIGATION_OPTIONS.map((navigationOption: NavigationOption, i) => (
+              <MenuItem
+                key={i}
+                navigationOption={navigationOption}
+                focused={navigationOption.href === location.pathname}
+                onClick={handleLinkClick}
+              />
+            ))}
+          </motion.ul>
+        </motion.div>
+        <motion.div className="sidebar-footer">
+          <motion.div className="footer-note center-content" variants={footerNoteVariants}>
+            <AiFillGithub size="2.5rem" style={{ marginRight: '2.5px' }} />
+            <a className="link" href="https://github.com/andouu/dinner-menu" target="_blank">repo.</a>
+          </motion.div>
+          <motion.div className="footer-note" variants={footerNoteVariants}>
+            Created with <a className="link" href="https://react-pxeokh.stackblitz.io/" target="_blank">love</a> for Soap (and 张家)
+          </motion.div>
+        </motion.div>
       </motion.div>
       <MenuToggle toggle={() => setOpen(!open)} />
     </motion.nav>
@@ -122,9 +164,14 @@ export const Header: React.FC = () => {
   const { scrollYProgress } = useScroll();
 
   return (
-    <motion.div id="header-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 4, duration: 0.5 }}>
-      <div id="header">
-        <span id="title">
+    <motion.div
+      className="header-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 3, duration: 0.5 }}
+    >
+      <div className="header">
+        <span className="title">
           <span>AND</span>
           <div className="circle" />
           <span style={{ marginLeft: '2px' }}>U</span>

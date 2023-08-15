@@ -5,7 +5,6 @@ import {
 import { Root } from './routes/Root';
 import { Error } from './routes/Error';
 import { Recipes } from './routes/Recipes';
-import { CostBreakdown } from './routes/CostBreakdown';
 import { Breakfast } from './components/Breakfast';
 import { Lunch } from './components/Lunch';
 import { Dinner } from './components/Dinner';

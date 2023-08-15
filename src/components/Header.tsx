@@ -1,5 +1,5 @@
 import { AiFillGithub } from 'react-icons/ai';
-import { motion, useScroll } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { NavigationOption, NAVIGATION_OPTIONS } from '../data/NavigationOptions';
 import { useLocation, useNavigate } from 'react-router-dom';

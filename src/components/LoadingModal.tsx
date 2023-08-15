@@ -1,5 +1,5 @@
 import { motion, stagger, useAnimate, usePresence } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './LoadingModal.css';
 
 interface ModalProps {

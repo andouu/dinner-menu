@@ -42,7 +42,7 @@ export interface PageProps {
 };
 
 const Page: React.FC<PageProps> = (props: PageProps) => {
-  const { text, lang, tag, images, model, textScaleFactor, onReflow, left } = props;
+  const { text, lang, tag, model, textScaleFactor, onReflow, left } = props;
 
   const { viewport } = useThree();
   const boxProps = {
@@ -125,7 +125,7 @@ export interface LayercardProps {
   textScaleFactor: number;
 };
 
-const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text, lang, textColor, color, map, textScaleFactor }: LayercardProps) => {
+const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text, lang, textColor, color, textScaleFactor }: LayercardProps) => {
   const ref = useRef<THREE.MeshBasicMaterial>(null);
   const { viewport, size } = useThree();
   const pageLerp = useRef(state.top / size.height);
@@ -188,7 +188,7 @@ const Content = (props: ContentProps) => {
     }
   });
 
-  const handleReflow = useCallback((width: number, height: number) => onReflow((state.pages = height / viewport.height + 5.5)), [onReflow, viewport.height]);
+  const handleReflow = useCallback((_: number, height: number) => onReflow((state.pages = height / viewport.height + 5.5)), [onReflow, viewport.height]);
   const sizesRef = useRef<number[]>([]);
   const scale = Math.min(1, viewport.width / 16);
 
@@ -201,7 +201,7 @@ const Content = (props: ContentProps) => {
             {...props}
             left={!(i % 2)}
             textScaleFactor={scale}
-            onReflow={(width, height) => {
+            onReflow={(_, height) => {
               sizesRef.current[i] = height;
               state.threshold = Math.max(totalPages, (totalPages / (15.8 * totalPages)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
             }}

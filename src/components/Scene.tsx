@@ -3,12 +3,16 @@ import { Loader, useAspect, useGLTF } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import React, { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Flex, useFlexSize } from '@react-three/flex';
-import { state } from '../api/SceneState';
-import { Text } from './Text';
-import { Geo } from './Geo';
+import { SupportedTextLanguage, Text } from './Text';
 import { motion } from 'framer-motion';
 import { GLTFDraco, GLTFMaterials, GLTFNodes } from '../types/models';
 import './Scene.css';
+import { useLocation } from 'react-router-dom';
+import { useMeal } from '../hooks/useMeal';
+import { mealToState } from '../data/SceneState';
+import { useMealState } from '../hooks/useMealState';
+
+// useGLTF.preload(state.content.map((content) => content.model.path));
 
 interface HeightReporterProps {
   onReflow: (width: number, height: number) => any;
@@ -23,7 +27,7 @@ const HeightReporter: React.FC<HeightReporterProps> = (props: HeightReporterProp
 
 export interface PageProps {
   text: string;
-  lang: 'en' | 'zh';
+  lang: SupportedTextLanguage;
   tag: string;
   images: string[];
   model: {
@@ -113,7 +117,7 @@ const Page: React.FC<PageProps> = (props: PageProps) => {
 export interface LayercardProps {
   depth: number;
   text: string;
-  lang: 'en' | 'zh';
+  lang: SupportedTextLanguage;
   boxWidth: number;
   boxHeight: number;
   map?: THREE.Texture;
@@ -123,13 +127,18 @@ export interface LayercardProps {
 };
 
 const Layercard: React.FC<LayercardProps> = ({ depth, boxWidth, boxHeight, text, lang, textColor, color, map, textScaleFactor }: LayercardProps) => {
+  const state = useMealState();
+  
   const ref = useRef<THREE.MeshBasicMaterial>(null);
   const { viewport, size } = useThree();
   const pageLerp = useRef(state.top / size.height);
+  const currentMeal = useMeal();
+  console.log(`${currentMeal} threshold: ${state.threshold}`);
   useFrame(() => {
     const page = (pageLerp.current = THREE.MathUtils.lerp(pageLerp.current, state.top / size.height, 0.15));
+    const threshold = state.threshold;
     if (depth >= 0 && ref.current !== null) {
-      ref.current.opacity = page < state.threshold * 1.7 ? 1.7 : 1 - (page - state.threshold * 1.7);
+      ref.current.opacity = page < threshold * 1.7 ? 1.7 : 1 - (page - threshold * 1.7);
     }
   });
 
@@ -162,6 +171,8 @@ interface ContentProps {
 };
 
 const Content = (props: ContentProps) => {
+  const state = useMealState();
+
   const { onReflow } = props;
 
   const group = useRef<THREE.Group>(null);
@@ -172,12 +183,17 @@ const Content = (props: ContentProps) => {
   const vec = new THREE.Vector3();
   const pageLerp = useRef(state.top / size.height);
 
+  const currentMeal = useMeal();
+
+  const totalPages = state.totalPages;
+
   useFrame(() => {
     const page = (pageLerp.current = THREE.MathUtils.lerp(pageLerp.current, state.top / size.height, 0.15));
     const y = page * viewport.height;
-    const sticky = state.threshold * viewport.height;
+    const threshold = state.threshold;
+    const sticky = threshold * viewport.height;
     if (group.current !== null) {
-      group.current.position.lerp(vec.set(0, page < state.threshold ? y : sticky, page < state.threshold ? 0 : page * 1.25), 0.15);
+      group.current.position.lerp(vec.set(0, page < threshold ? y : sticky, page < threshold ? 0 : page * 1.25), 0.15);
     }
   });
 
@@ -196,14 +212,13 @@ const Content = (props: ContentProps) => {
             textScaleFactor={scale}
             onReflow={(width, height) => {
               sizesRef.current[i] = height;
-              state.threshold = Math.max(2, (2 / (15.8 * 2)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
+              state.threshold = Math.max(totalPages, (totalPages / (15.8 * totalPages)) * sizesRef.current.reduce((acc, e) => acc + e, 0));
             }}
           />
         ))}
         <Box dir="row" width="100%" height="100%" align="center" justify="center">
           <Box>
             <Layercard {...state.depthbox[0]} text={state.depthbox[1].text} boxWidth={bW} boxHeight={bH} textScaleFactor={scale} />
-            <Geo position={[bW / 2, -bH / 2, state.depthbox[1].depth]} />
           </Box>
         </Box>
       </Flex>
@@ -212,6 +227,8 @@ const Content = (props: ContentProps) => {
 };
 
 export const Scene = () => {
+  const state = useMealState();
+
   const scrollArea = useRef<HTMLDivElement>(null);
   const onScroll = (e: Partial<React.UIEvent<HTMLDivElement>>) => (state.top = (e.target as HTMLDivElement).scrollTop);
   useEffect(() => {
@@ -237,7 +254,7 @@ export const Scene = () => {
         style={{ zIndex: -1 }}
       >
         <pointLight position={[-10, -10, -10]} intensity={1} />
-        <ambientLight intensity={8} />
+        <ambientLight intensity={10} />
         <spotLight
           castShadow
           angle={0.3}
@@ -257,7 +274,7 @@ export const Scene = () => {
         onScroll={onScroll}
         onPointerMove={(e) => (state.mouse = [(e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1])}
       >
-        <div style={{ height: `${pages * 100}vh` }} />
+        <div style={{ height: `${(pages) * 100}vh` }} />
       </div>
       <Loader />
     </motion.div>

@@ -2,9 +2,11 @@ import { ComponentProps } from 'react';
 import { useReflow } from '@react-three/flex';
 import { Text as TextImpl } from '@react-three/drei';
 
+export type SupportedTextLanguage = 'en' | 'zh' | 'ar';
+
 type TextProps = {
   bold?: boolean;
-  lang: 'en' | 'zh';
+  lang: SupportedTextLanguage;
 } & ComponentProps<typeof TextImpl>;
 
 const fontMap = {
@@ -15,6 +17,10 @@ const fontMap = {
   zh: {
     bold: '/NotoSansSC-Bold.otf',
     regular: '/NotoSansSC-Regular.otf',
+  },
+  ar: {
+    bold: '/Ruwudu-Bold.ttf',
+    regular: '/Ruwudu-Regular.ttf',
   },
 };
 

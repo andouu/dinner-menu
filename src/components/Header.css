@@ -2,13 +2,18 @@
   position: absolute;
   top: 0;
   left: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: 'marquee' 'main';
   width: 100%;
-  --header-height: 7rem;
+  --header-height: 10rem;
   height: var(--header-height);
   z-index: 9999;
 }
 
 .header {
+  grid-area: 'main';
   position: sticky;
   top: 0;
   left: 0;
@@ -58,7 +63,7 @@ button {
   z-index: 10000;
   border: none;
   padding-top: 5px;
-  margin-right: 1rem;
+  padding-right: 1.5rem;
   background: transparent;
 }
 
@@ -69,7 +74,7 @@ button {
   grid-template-rows: 1fr auto;
   grid-template-areas: 'content' 'footer';
   width: 0;
-  height: 100vh;
+  height: calc(100vh - 3rem);
   top: 0;
   right: 0;
   box-sizing: border-box;
@@ -116,6 +121,14 @@ li {
   font-size: 3rem;
 }
 
+.ticker {
+  grid-area: 'marquee';
+  height: 3rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  background-color: var(--accent-text-color);
+}
+
 .circle {
   width: calc(1 * var(--font-size));
   height: calc(0.75 * var(--font-size));
@@ -125,4 +138,8 @@ li {
 
 .link {
   text-decoration: underline;
+}
+
+.link:visited {
+  color: inherit;
 }

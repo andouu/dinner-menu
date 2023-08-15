@@ -4,17 +4,8 @@ import { useState } from 'react';
 import { NavigationOption, NAVIGATION_OPTIONS } from '../data/NavigationOptions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
-import './Header.css';
-import { useMeal } from '../hooks/useMeal';
 import { usePath } from '../hooks/usePath';
-
-const ScrollingText: React.FC = () => {
-  return (
-    <div className="tape">
-
-    </div>
-  );
-};
+import './Header.css';
 
 const Path = (props: any) => (
   <motion.path
@@ -190,18 +181,17 @@ const Menu: React.FC = () => {
 };
 
 export const Header: React.FC = () => {
-  const { scrollYProgress } = useScroll();
-  const meal = useMeal();
+  const path = usePath();
 
   return (
     <motion.div
       className="header-container"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 3, duration: 0.5 }}
+      transition={{ delay: 2, duration: 0.5 }}
     >
       <Marquee className="ticker" autoFill>
-        <div style={{ margin: '0 0.5rem', fontSize: '1.4rem', textTransform: 'uppercase' }}>{usePath()}</div>
+        <div style={{ margin: '0 0.5rem', fontSize: '1.4rem', textTransform: 'uppercase' }}>{path}</div>
       </Marquee>
       <div className="header">
         <span className="title">
@@ -209,7 +199,7 @@ export const Header: React.FC = () => {
           <div className="circle" />
           <span style={{ marginLeft: '2px' }}>U</span>
         </span>
-        <ScrollingText />
+        <div className="content" />
         <Menu />
       </div>
     </motion.div>

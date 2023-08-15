@@ -210,7 +210,7 @@ const Content = (props: ContentProps) => {
         <Box dir="row" width="100%" height="100%" align="center" justify="center">
           <Box>
             <Layercard {...state.depthbox[0]} text={state.depthbox[1].text} boxWidth={bW} boxHeight={bH} textScaleFactor={scale} />
-          </Box>
+          </Box> 
         </Box>
       </Flex>
     </group>

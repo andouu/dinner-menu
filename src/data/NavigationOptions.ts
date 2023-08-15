@@ -24,9 +24,4 @@ export const NAVIGATION_OPTIONS: NavigationOption[] = [
     href: '/recipes',
     text: 'RECIPES',
   },
-  {
-    href: '/costBreakdown',
-    text: 'COST BREAKDOWN',
-    dateAvailable: new Date(9999999999999),
-  },
 ];

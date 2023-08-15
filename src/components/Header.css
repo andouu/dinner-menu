@@ -22,7 +22,7 @@
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: auto 1fr auto;
-  grid-template-areas: 'title' 'tape' 'menu';
+  grid-template-areas: 'title' 'content' 'menu';
   background-color: var(--secondary-color);
   z-index: 9999;
 }
@@ -44,8 +44,8 @@
   letter-spacing: 2px;
 }
 
-.tape {
-  grid-area: 'tape';
+.content {
+  grid-area: 'content';
 }
 
 .menu {

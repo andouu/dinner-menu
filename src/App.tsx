@@ -34,10 +34,6 @@ const router = createBrowserRouter([
         path: 'recipes',
         element: <Recipes />,
       },
-      {
-        path: 'costBreakdown',
-        element: <CostBreakdown />,
-      }
     ]
   },
 ]);

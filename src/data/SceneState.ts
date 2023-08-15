@@ -104,7 +104,7 @@ export const mealToContent: MealContentMap = {
           },
           scale: 2.25,
           position: [1.5, -2, 0],
-          rotation: [-Math.PI / 8, -Math.PI / 8, 0],
+          rotation: [-Math.PI / 8, -Math.PI / 8, Math.PI],
         },
       },
       {
@@ -135,16 +135,17 @@ export const mealToContent: MealContentMap = {
         lang: 'zh',
         images: [],
         model: {
-          path: '/xiaolongbao-s.glb',
+          path: '/xiaolongbao_01.glb',
           compose: (nodes, materials) => {
             return [
-              { geometry: nodes.Object_2.geometry, material: materials["Scene_-_Root"] },
-              // { geometry: nodes.Object_3.geometry, material: materials.main }
+              // { geometry: nodes.Object_2.geometry, material: materials["Scene_-_Root"] },
+              { geometry: nodes.Object_2.geometry, material: materials.main },
+              { geometry: nodes.Object_3.geometry, material: materials.main }
             ];
           },
-          scale: 1000,
-          position: [0, 0, 0],
-          rotation: [0, 0, 0],
+          scale: 20,
+          position: [-1, -1, 0],
+          rotation: [-Math.PI / 8, -Math.PI / 6, 0],
         },
       },
       {
@@ -171,13 +172,18 @@ export const mealToContent: MealContentMap = {
         lang: 'zh',
         images: [],
         model: {
-          path: '/beans.glb',
+          path: '/wok_homework10.glb',
           compose: (nodes, materials) => {
-            return [{ geometry: nodes.Object_4.geometry, material: materials.material_0 }];
+            return [
+              { geometry: nodes.Wok001_Material_0.geometry, material: materials.Material },
+              { geometry: nodes.Steel001_Material_0.geometry, material: materials.Material },
+              { geometry: nodes.Handle001_Material_0.geometry, material: materials.Material },
+              { geometry: nodes.Button001_Material_0.geometry, material: materials.Material },
+            ];
           },
           scale: 2.25,
           position: [1.5, -1, 0],
-          rotation: [-Math.PI / 8, -Math.PI / 8, 0],
+          rotation: [-Math.PI / 8, -Math.PI / 8, Math.PI],
         },
       },
     ],
@@ -200,7 +206,7 @@ export const IState: ISceneState = {
     {
       depth: -3.5,
       textColor: '#141414',
-      text: 'RECIPES &\nNUTRITION FACTS',
+      text: 'SEE MENU FOR MORE INFO',
       lang: 'en',
       image: '/images/fruits.avif',
     },
